@@ -1,0 +1,13 @@
+.todo-text {
+  font-size: 16px;
+}
+
+.button--delete {
+  padding: 5px 10px;
+  background-color: #fd5c63;
+  cursor: pointer;
+}
+
+.button--delete:hover {
+  background-color: #d2122e;
+}
