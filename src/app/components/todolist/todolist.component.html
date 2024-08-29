@@ -1,13 +1,16 @@
 <div class="todo-container">
   <h1>{{ componentTitle }}</h1>
-  <ul>
-    <li *ngFor="let item of listItems" class="todo-item">
-      <span class="todo-text">{{ item.description }}</span>
-      <button (click)="deleteItem(item.itemIndex)" class="delete-button">{{ deleteButtonTitle }}</button>
-    </li>
-  </ul>
+  <app-todolist-item *ngFor="let item of listItems"
+                     [listItem]="item"
+                     (delete)="deleteItem(item.id)"
+                     class="todo-item"/>
   <div class="input-container">
-    <input [(ngModel)]="newItemValue" placeholder="{{ inputPlaceholder }}" class="todo-input" />
-    <button (click)="addItem(newItemValue); newItemValue=''" [disabled]="!newItemValue.trim()" class="add-button">{{ addButtonTitle }}</button>
+    <input matInput
+           [(ngModel)]="newItemValue"
+           placeholder="{{ inputPlaceholder }}"
+           class="todo-input"/>
+    <button (click)="addItem(newItemValue); newItemValue=''" [disabled]="!newItemValue.trim()" class="button button--add">
+      {{ addButtonTitle }}
+    </button>
   </div>
 </div>

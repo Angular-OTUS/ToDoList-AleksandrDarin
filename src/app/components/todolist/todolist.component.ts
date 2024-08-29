@@ -1,47 +1,48 @@
-import { Component } from '@angular/core';
-import { NgForOf } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import {Component} from '@angular/core';
+import {NgForOf} from "@angular/common";
+import {FormsModule} from "@angular/forms";
+import {TodoListItem} from "../../interfaces/todolist-item";
+import {MatFormField} from "@angular/material/form-field";
+import {MatInput} from "@angular/material/input";
+import {TodolistItemComponent} from "../todolist-item/todolist-item.component";
 
 @Component({
   selector: 'app-todolist',
   standalone: true,
   imports: [
     NgForOf,
-    FormsModule
+    FormsModule,
+    MatFormField,
+    MatInput,
+    TodolistItemComponent
   ],
   templateUrl: './todolist.component.html',
   styleUrl: './todolist.component.css'
 })
 export class TodolistComponent {
 
-  componentTitle = "Todo List"
-  deleteButtonTitle = "Delete"
-  inputPlaceholder = "Add your new todo"
-  addButtonTitle = "Add task"
-  newItemValue: string = '';
+  protected componentTitle = "Todo List"
+  protected inputPlaceholder = "Add your new todo"
+  protected addButtonTitle = "Add task"
+  protected newItemValue: string = '';
 
-  listItems: Item[] = [
-    { itemIndex: 1, description: "Buy a new gaming laptop" },
-    { itemIndex: 2, description: "Complete previous task" },
-    { itemIndex: 3, description: "Create some angular app" }
+  protected listItems: TodoListItem[] = [
+    { id: 1, description: "Buy a new gaming laptop" },
+    { id: 2, description: "Complete previous task" },
+    { id: 3, description: "Create some angular app" }
   ]
 
-  addItem(description: string) {
+  protected addItem(description: string) {
     if (description.trim()) {
       const newItem = {
-        itemIndex: this.listItems.length + 1,
+        id: this.listItems.length + 1,
         description: description.trim()
       };
       this.listItems.push(newItem);
     }
   }
 
-  deleteItem(itemIndex: number) {
-    this.listItems = this.listItems.filter(item => item.itemIndex !== itemIndex);
+  protected deleteItem(itemId: number) {
+    this.listItems = this.listItems.filter(item => item.id !== itemId);
   }
-}
-
-export interface Item {
-  itemIndex: number;
-  description: string;
 }
