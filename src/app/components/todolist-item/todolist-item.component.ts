@@ -1,12 +1,15 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {TodoListItem} from "../../interfaces/todolist-item";
+import {ButtonComponent} from "../button/button.component";
 
 @Component({
   selector: 'app-todolist-item',
   standalone: true,
-  imports: [],
+  imports: [
+    ButtonComponent,
+  ],
   templateUrl: './todolist-item.component.html',
-  styleUrl: './todolist-item.component.css'
+  styleUrl: './todolist-item.component.css',
 })
 export class TodolistItemComponent {
 

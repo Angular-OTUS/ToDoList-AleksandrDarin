@@ -3,3 +3,33 @@
   border: none;
   border-radius: 5px;
 }
+
+.button--add {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button--add:disabled {
+  background-color: #ace1af;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.button--add:enabled {
+  background-color: #32de84;
+}
+
+.todo-text {
+  font-size: 16px;
+}
+
+.button--delete {
+  padding: 5px 10px;
+  background-color: #fd5c63;
+  cursor: pointer;
+}
+
+.button--delete:hover {
+  background-color: #d2122e;
+}
