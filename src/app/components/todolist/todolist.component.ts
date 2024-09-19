@@ -7,6 +7,8 @@ import {MatInput} from "@angular/material/input";
 import {TodolistItemComponent} from "../todolist-item/todolist-item.component";
 import {ButtonComponent} from "../button/button.component";
 import {TooltipDirective} from "../../shared/tooltip.directive";
+import {TodoListService} from "../../services/todoListService";
+import {ToastService} from "../../services/toastService";
 
 @Component({
   selector: 'app-todolist',
@@ -35,13 +37,12 @@ export class TodolistComponent implements OnInit {
   protected newItemDescription = '';
   protected isLoading = true;
 
-  protected selectedItemId: number | null = null;
+  protected selectedItemId: string = '';
 
-  protected listItems: TodoListItem[] = [
-    { id: 1, title: "Buy a new gaming laptop", description: "It should be super cool" },
-    { id: 2, title: "Complete previous task", description: "Be happy about your new laptop" },
-    { id: 3, title: "Create some angular app", description: "Give it a try" },
-  ]
+  constructor(
+    private todoListService: TodoListService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     setInterval((): void => {
@@ -49,26 +50,30 @@ export class TodolistComponent implements OnInit {
     }, 500);
   }
 
+  protected getAllListItems(): TodoListItem[] {
+    return this.todoListService.getAllListItems();
+  }
+
   protected addItem(title: string, description: string): void {
-    if (title.trim()) {
-      const newItem = {
-        id: this.listItems.length + 1,
-        title: title.trim(),
-        description: description.trim(),
-      };
-      this.listItems.push(newItem);
-    }
+    this.todoListService.addItem(title, description);
+    this.toastService.showToast("Item added");
   }
 
-  protected deleteItem(itemId: number) {
-    this.listItems = this.listItems.filter(item => item.id !== itemId);
+  protected deleteItem(itemId: string) {
+    this.todoListService.deleteItem(itemId);
+    this.toastService.showToast("Item deleted");
   }
 
-  protected selectItem(itemId: number) {
+  protected selectItem(itemId: string) {
     this.selectedItemId = itemId;
   }
 
+  protected updateItem(updatedItem: TodoListItem) {
+    this.todoListService.updateItem(updatedItem);
+    this.toastService.showToast("Item updated");
+  }
+
   protected getSelectedItemDescription(): string {
-    return this.listItems.find(item => item.id === this.selectedItemId)?.description ?? '';
+    return this.todoListService.getAllListItems().find(item => item.id === this.selectedItemId)?.description ?? '';
   }
 }

@@ -5,12 +5,13 @@
   <ng-template #content>
     <div class="main-content">
       <div class="todo-list">
-        <app-todolist-item *ngFor="let item of listItems"
+        <app-todolist-item *ngFor="let item of getAllListItems()"
                            class="todo-item"
                            [ngClass]="{'selected': selectedItemId === item.id}"
                            [listItem]="item"
                            (click)="selectItem(item.id)"
                            (delete)="deleteItem(item.id)"
+                           (update)="updateItem($event)"
                            appTooltip="Click here to see the description"/>
       </div>
       <div class="description-container">
