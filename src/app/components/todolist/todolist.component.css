@@ -15,6 +15,15 @@ ul {
   padding: 0;
 }
 
+.main-content {
+  display: flex;
+}
+
+.todo-list {
+  width: 73%;
+  padding-right: 10px;
+}
+
 .todo-item {
   display: flex;
   justify-content: space-between;
@@ -24,6 +33,7 @@ ul {
   background-color: #f1f1f1;
   border: 1px solid #ddd;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .input-container {
@@ -37,6 +47,16 @@ ul {
   border-radius: 5px;
   flex-grow: 1;
   margin-right: 10px;
+}
+
+.todo-textarea {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  flex-grow: 1;
+  margin: 10px auto;
+  resize: none;
 }
 
 .loader {
@@ -53,4 +73,20 @@ ul {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.todo-container textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.description-container {
+  width: 27%;
+  padding-left: 10px;
+  border-left: 1px solid #CCCC;
+}
+
+.selected {
+  background-color: #d1e7dd;
+  border-left: 4px solid #0f5132;
 }

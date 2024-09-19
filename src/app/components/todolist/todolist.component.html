@@ -1,21 +1,39 @@
 <div class="todo-container">
   <h1>{{ componentTitle }}</h1>
-  <div *ngIf="isLoading; else list" class="loader"></div>
-  <ng-template #list>
-    <app-todolist-item *ngFor="let item of listItems"
-                       [listItem]="item"
-                       (delete)="deleteItem(item.id)"
-                       class="todo-item"/>
+
+  <div *ngIf="isLoading; else content" class="loader"></div>
+  <ng-template #content>
+    <div class="main-content">
+      <div class="todo-list">
+        <app-todolist-item *ngFor="let item of listItems"
+                           class="todo-item"
+                           [ngClass]="{'selected': selectedItemId === item.id}"
+                           [listItem]="item"
+                           (click)="selectItem(item.id)"
+                           (delete)="deleteItem(item.id)"
+                           appTooltip="Click here to see the description"/>
+      </div>
+      <div class="description-container">
+        <p *ngIf="selectedItemId">{{ getSelectedItemDescription() }}</p>
+      </div>
+    </div>
   </ng-template>
   <div class="input-container">
     <input matInput
-           [(ngModel)]="newItemValue"
+           [(ngModel)]="newItemTitle"
            placeholder="{{ inputPlaceholder }}"
            class="todo-input"/>
     <app-button [inputTitle]="addButtonTitle"
-                [disabled]="!newItemValue.trim()"
+                [disabled]="!newItemTitle.trim()"
                 [additionalCssClasses]="'button--add'"
-                (click)="addItem(newItemValue); newItemValue=''">
+                (click)="addItem(newItemTitle, newItemDescription); newItemTitle=''; newItemDescription=''"
+                appTooltip="Click here to add new item">
     </app-button>
   </div>
+
+  <textarea matInput
+            [(ngModel)]="newItemDescription"
+            placeholder="{{ descriptionPlaceholder }}"
+            class="todo-textarea">
+  </textarea>
 </div>

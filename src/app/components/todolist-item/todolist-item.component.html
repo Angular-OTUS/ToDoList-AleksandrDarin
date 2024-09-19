@@ -1,5 +1,6 @@
-<span class="todo-text">{{ listItem.description }}</span>
+<span class="todo-text">{{ listItem.title }}</span>
 <app-button [inputTitle]="deleteButtonTitle"
             (click)="deleteItem()"
-            [additionalCssClasses]="'button--delete'">
+            [additionalCssClasses]="'button--delete'"
+            appTooltip="Click here to delete this item">
 </app-button>
