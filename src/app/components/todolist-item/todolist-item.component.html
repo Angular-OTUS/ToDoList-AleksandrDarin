@@ -1,4 +1,15 @@
-<span class="todo-text">{{ listItem.title }}</span>
+<div (dblclick)="enableEdit()">
+  <span *ngIf="!isEditing" class="todo-text">{{ listItem.title }}</span>
+
+  <div *ngIf="isEditing">
+    <input type="text" [(ngModel)]="editTitle" />
+    <app-button
+      [inputTitle]="saveButtonTitle"
+      (click)="saveTitle()"
+      [additionalCssClasses]="'button--save'">
+    </app-button>
+  </div>
+</div>
 <app-button [inputTitle]="deleteButtonTitle"
             (click)="deleteItem()"
             [additionalCssClasses]="'button--delete'"
