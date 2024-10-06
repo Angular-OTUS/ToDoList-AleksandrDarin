@@ -1,0 +1,22 @@
+.input-container {
+  display: flex;
+}
+
+.todo-input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.todo-textarea {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  flex-grow: 1;
+  margin: 10px auto;
+  resize: none;
+}

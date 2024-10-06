@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, Output} from '@angular/core';
-import {TodoListItem} from "../../interfaces/todolist-item";
+import {ItemStatus, TodoListItem} from "../../interfaces/todolist-item";
 import {ButtonComponent} from "../button/button.component";
 import {TooltipDirective} from "../../shared/tooltip.directive";
 import {FormsModule} from "@angular/forms";
@@ -20,28 +20,35 @@ import {NgIf} from "@angular/common";
 export class TodolistItemComponent {
 
   @Input() listItem!: TodoListItem;
-  @Output() delete = new EventEmitter<string>();
-  @Output() update = new EventEmitter<TodoListItem>();
+  @Output() delete: EventEmitter<string> = new EventEmitter<string>();
+  @Output() update: EventEmitter<TodoListItem> = new EventEmitter<TodoListItem>();
 
-  deleteButtonTitle = "Delete";
-  saveButtonTitle = "Save";
-  isEditing = false;
-  editTitle = '';
+  protected readonly deleteButtonTitle: string = "Delete";
+  protected readonly saveButtonTitle: string = "Save";
+  protected isEditing: boolean = false;
+  protected editTitle: string = '';
 
   constructor(
     private elementRef: ElementRef
   ) {}
 
-  protected deleteItem() {
+  protected deleteItem(): void {
     this.delete.emit(this.listItem.id);
   }
 
-  protected enableEdit() {
+  protected enableEdit(): void {
     this.isEditing = true;
     this.editTitle = this.listItem.title;
   }
 
-  protected saveTitle() {
+  protected toggleStatus(): void {
+    this.listItem.status = this.listItem.status === ItemStatus.IN_PROGRESS ?
+      ItemStatus.COMPLETED : ItemStatus.IN_PROGRESS;
+
+    this.update.emit(this.listItem);
+  }
+
+  protected saveTitle(): void {
     if (this.editTitle.trim()) {
       this.listItem.title = this.editTitle;
       this.update.emit(this.listItem);
@@ -56,4 +63,6 @@ export class TodolistItemComponent {
       this.isEditing = false;
     }
   }
+
+  protected readonly ItemStatus = ItemStatus;
 }

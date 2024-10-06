@@ -1,0 +1,22 @@
+{
+  "listItems": [
+    {
+      "id": "1c4cae9e-7d26-4f7c-a754-623512b1ed28",
+      "title": "Buy a new gaming laptop",
+      "description": "It should be super cool",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "a3f6a467-1cd4-4768-a1a1-43ab9a17c8c1",
+      "title": "Complete previous task",
+      "description": "Be happy about your new laptop",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "8167720f-0e75-4ba8-b301-5144d3ea1f40",
+      "title": "Create some angular app",
+      "description": "Give it a try",
+      "status": "IN_PROGRESS"
+    }
+  ]
+}
