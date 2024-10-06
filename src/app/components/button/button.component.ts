@@ -12,7 +12,6 @@ import {NgClass} from "@angular/common";
 })
 export class ButtonComponent {
 
-  @Input() inputTitle = '';
   @Input() disabled = false;
   @Input() additionalCssClasses = '';
 }

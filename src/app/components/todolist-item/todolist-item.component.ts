@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, HostListener, Input, Output} from '@angular/core';
-import {TodoListItem} from "../../interfaces/todolist-item";
+import {ItemStatus, TodoListItem} from "../../interfaces/todolist-item";
 import {ButtonComponent} from "../button/button.component";
 import {TooltipDirective} from "../../shared/tooltip.directive";
 import {FormsModule} from "@angular/forms";
@@ -41,6 +41,13 @@ export class TodolistItemComponent {
     this.editTitle = this.listItem.title;
   }
 
+  protected toggleStatus() {
+    this.listItem.status = this.listItem.status === ItemStatus.IN_PROGRESS ?
+      ItemStatus.COMPLETED : ItemStatus.IN_PROGRESS;
+
+    this.update.emit(this.listItem);
+  }
+
   protected saveTitle() {
     if (this.editTitle.trim()) {
       this.listItem.title = this.editTitle;
@@ -56,4 +63,6 @@ export class TodolistItemComponent {
       this.isEditing = false;
     }
   }
+
+  protected readonly ItemStatus = ItemStatus;
 }
