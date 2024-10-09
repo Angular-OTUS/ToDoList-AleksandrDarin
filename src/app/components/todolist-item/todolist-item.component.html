@@ -1,17 +1,17 @@
-<div (dblclick)="enableEdit()">
+<div (dblclick)="enableEdit()" appTooltip="Double click here to see the description">
+  <input type="checkbox" [checked]="listItem.status === ItemStatus.COMPLETED" (change)="toggleStatus()">
   <span *ngIf="!isEditing" class="todo-text">{{ listItem.title }}</span>
 
   <div *ngIf="isEditing">
     <input type="text" [(ngModel)]="editTitle" />
-    <app-button
-      [inputTitle]="saveButtonTitle"
-      (click)="saveTitle()"
-      [additionalCssClasses]="'button--save'">
+    <app-button (click)="saveTitle()"
+                [additionalCssClasses]="'button--save'">
+      {{ saveButtonTitle }}
     </app-button>
   </div>
 </div>
-<app-button [inputTitle]="deleteButtonTitle"
-            (click)="deleteItem()"
+<app-button (click)="deleteItem()"
             [additionalCssClasses]="'button--delete'"
             appTooltip="Click here to delete this item">
+  {{ deleteButtonTitle }}
 </app-button>
