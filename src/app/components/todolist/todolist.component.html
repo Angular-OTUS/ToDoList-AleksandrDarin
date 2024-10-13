@@ -1,7 +1,16 @@
 <div class="todo-container">
   <h1>{{ componentTitle }}</h1>
 
-  <div *ngIf="isLoading; else content" class="loader"></div>
+  <div>
+    <mat-form-field appearance="fill" class="select-field">
+      <mat-select [(value)]="selectedStatus" (selectionChange)="filterItems()">
+        <mat-option [value]="null">All</mat-option>
+        <mat-option *ngFor="let status of statuses" [value]="status">{{ status }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <app-loading-spinner *ngIf="isLoading; else content"></app-loading-spinner>
   <ng-template #content>
     <div class="main-content">
       <div class="todo-list">
@@ -11,30 +20,12 @@
                            [listItem]="item"
                            (click)="selectItem(item.id)"
                            (delete)="deleteItem(item.id)"
-                           (update)="updateItem($event)"
-                           appTooltip="Click here to see the description"/>
+                           (update)="updateItem($event)"/>
       </div>
       <div class="description-container">
-        <p *ngIf="selectedItemId">{{ getSelectedItemDescription() }}</p>
+        <span *ngIf="selectedItemId">{{ this.selectedItemDescription }}</span>
       </div>
     </div>
   </ng-template>
-  <div class="input-container">
-    <input matInput
-           [(ngModel)]="newItemTitle"
-           placeholder="{{ inputPlaceholder }}"
-           class="todo-input"/>
-    <app-button [inputTitle]="addButtonTitle"
-                [disabled]="!newItemTitle.trim()"
-                [additionalCssClasses]="'button--add'"
-                (click)="addItem(newItemTitle, newItemDescription); newItemTitle=''; newItemDescription=''"
-                appTooltip="Click here to add new item">
-    </app-button>
-  </div>
-
-  <textarea matInput
-            [(ngModel)]="newItemDescription"
-            placeholder="{{ descriptionPlaceholder }}"
-            class="todo-textarea">
-  </textarea>
+  <app-todo-create-item (addItem)="addItem($event)"/>
 </div>

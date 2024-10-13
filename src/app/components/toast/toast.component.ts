@@ -15,20 +15,20 @@ import {ToastService} from "../../services/toastService";
 })
 export class ToastComponent implements OnInit {
 
-  closeToastButtonTitle = 'X';
-  toasts: string[] = []
+  protected readonly closeToastButtonTitle: string = 'X';
+  protected toasts: string[] = []
 
   constructor(
     private toastsService: ToastService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.toastsService.getObservableToastsSubject().subscribe(toasts => {
       this.toasts = toasts;
     })
   }
 
-  protected removeToast(toastIndex: number) {
+  protected removeToast(toastIndex: number): void {
     this.toastsService.removeToast(toastIndex);
   }
 }
