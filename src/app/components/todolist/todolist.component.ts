@@ -12,6 +12,7 @@ import {ToastService} from "../../services/toastService";
 import {LoadingSpinnerComponent} from "../loading-spinner/loading-spinner.component";
 import {MatOption, MatSelect} from "@angular/material/select";
 import {TodoCreateItemComponent} from "../todo-create-item/todo-create-item.component";
+import {Router, RouterOutlet} from "@angular/router";
 
 @Component({
   selector: 'app-todolist',
@@ -30,6 +31,7 @@ import {TodoCreateItemComponent} from "../todo-create-item/todo-create-item.comp
     MatSelect,
     MatOption,
     TodoCreateItemComponent,
+    RouterOutlet
   ],
   templateUrl: './todolist.component.html',
   styleUrl: './todolist.component.css',
@@ -40,14 +42,14 @@ export class TodolistComponent implements OnInit {
 
   protected isLoading: boolean = true;
   protected selectedItemId: string = '';
-  protected selectedItemDescription: string = '';
   protected filteredItems: TodoListItem[] = [];
   protected selectedStatus: ItemStatus | null = null;
   protected statuses: string[] = Object.values(ItemStatus);
 
   constructor(
     private todoListService: TodoListService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -75,11 +77,8 @@ export class TodolistComponent implements OnInit {
   }
 
   protected selectItem(itemId: string): void {
+    this.router.navigate([`/tasks/${itemId}`]).then();
     this.selectedItemId = itemId;
-    this.todoListService.getAllListItems()
-      .subscribe((listItems) => {
-      this.selectedItemDescription = listItems.find(item => item.id === this.selectedItemId)?.description ?? '';
-    })
   }
 
   protected updateItem(updatedItem: TodoListItem): void {
@@ -91,14 +90,14 @@ export class TodolistComponent implements OnInit {
   protected filterItems(): void {
     if (this.selectedStatus === null) {
       this.todoListService.getAllListItems()
-        .subscribe((listItems) => {
-        this.filteredItems = listItems;
-      })
+        .subscribe((listItems: TodoListItem[]) => {
+          this.filteredItems = listItems;
+      });
     } else {
       this.todoListService.getAllListItems()
-        .subscribe((listItems) => {
-        this.filteredItems = listItems.filter(item => item.status === this.selectedStatus);
-      })
+        .subscribe((listItems: TodoListItem[]) => {
+          this.filteredItems = listItems.filter(item => item.status === this.selectedStatus);
+      });
     }
   }
 }

@@ -22,9 +22,7 @@
                            (delete)="deleteItem(item.id)"
                            (update)="updateItem($event)"/>
       </div>
-      <div class="description-container">
-        <span *ngIf="selectedItemId">{{ this.selectedItemDescription }}</span>
-      </div>
+      <router-outlet/>
     </div>
   </ng-template>
   <app-todo-create-item (addItem)="addItem($event)"/>
