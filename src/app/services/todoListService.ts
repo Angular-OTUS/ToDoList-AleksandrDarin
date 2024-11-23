@@ -17,7 +17,7 @@ export class TodoListService {
     private toastService: ToastService
   ) {}
 
-  public addItem(title: string, description?: string): boolean {
+  public addItem(title: string, description?: string): Observable<void> {
     if (title.trim()) {
       const newItem: TodoListItem = {
         id: crypto.randomUUID(),
@@ -25,16 +25,11 @@ export class TodoListService {
         description: description?.trim(),
         status: ItemStatus.IN_PROGRESS
       };
-      this.httpClient.post(this.apiUrl, newItem)
-        .subscribe({
-          error: (err) => {
-            this.toastService.showToast("Error adding new item");
-            console.error(err);
-          }
-      })
-      return true;
+      return this.httpClient.post<void>(this.apiUrl, newItem)
+    } else {
+      this.toastService.showToast("Error adding new item: title is empty");
+      throw Error("Error adding new item: title is empty");
     }
-    return false;
   }
 
   public getAllListItems(): Observable<TodoListItem[]> {
