@@ -1,0 +1,44 @@
+.columns {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.status-column {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.status-column h2 {
+  margin: 0 0 16px 0;
+  font-size: 1.25rem;
+  color: #333;
+  text-align: center;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.todo-item {
+  padding: 12px;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
