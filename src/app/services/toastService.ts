@@ -6,19 +6,19 @@ import {BehaviorSubject, Observable} from "rxjs";
 })
 export class ToastService {
 
-  private toastsSubject: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  private readonly _toasts$: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
 
-  public getObservableToastsSubject(): Observable<string[]> {
-    return this.toastsSubject.asObservable();
+  public get toasts$(): Observable<string[]> {
+    return this._toasts$.asObservable();
   }
 
   public showToast(message: string): void {
-    const updatedToasts = [...this.toastsSubject.value, message];
-    this.toastsSubject.next(updatedToasts);
+    const updatedToasts: string[] = [...this._toasts$.value, message];
+    this._toasts$.next(updatedToasts);
   }
 
   public removeToast(index: number): void {
-    const updatedToasts = this.toastsSubject.value.filter((_, i) => i !== index);
-    this.toastsSubject.next(updatedToasts);
+    const updatedToasts: string[] = this._toasts$.value.filter((_, i) => i !== index);
+    this._toasts$.next(updatedToasts);
   }
 }

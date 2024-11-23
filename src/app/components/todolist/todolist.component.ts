@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {ItemStatus, TodoListItem} from "../../interfaces/todolist-item";
 import {MatFormField} from "@angular/material/form-field";
@@ -13,7 +13,7 @@ import {LoadingSpinnerComponent} from "../loading-spinner/loading-spinner.compon
 import {MatOption, MatSelect} from "@angular/material/select";
 import {TodoCreateItemComponent} from "../todo-create-item/todo-create-item.component";
 import {Router, RouterOutlet} from "@angular/router";
-import {Subject, takeUntil} from "rxjs";
+import {BehaviorSubject, combineLatest, map, Observable, Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-todolist',
@@ -32,20 +32,27 @@ import {Subject, takeUntil} from "rxjs";
     MatSelect,
     MatOption,
     TodoCreateItemComponent,
-    RouterOutlet
+    RouterOutlet,
+    AsyncPipe
   ],
   templateUrl: './todolist.component.html',
   styleUrl: './todolist.component.css',
 })
 export class TodolistComponent implements OnInit, OnDestroy {
 
-  protected readonly componentTitle: string = "Todo List"
+  protected readonly componentTitle: string = "Todo List";
 
-  protected isLoading: boolean = true;
-  protected selectedItemId: string = '';
-  protected filteredItems: TodoListItem[] = [];
-  protected selectedStatus: ItemStatus | null = null;
+  private isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public isLoading$: Observable<boolean> = this.isLoading.asObservable();
+
+  private filteredItems: BehaviorSubject<TodoListItem[]> = new BehaviorSubject<TodoListItem[]>([]);
+  public filteredItems$: Observable<TodoListItem[]> = this.filteredItems.asObservable();
+
+  private selectedStatus: BehaviorSubject<ItemStatus | null> = new BehaviorSubject<ItemStatus | null>(null);
+  public selectedStatus$: Observable<ItemStatus | null> = this.selectedStatus.asObservable();
+
   protected statuses: string[] = Object.values(ItemStatus);
+  protected selectedItemId: string = '';
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -55,10 +62,8 @@ export class TodolistComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    setTimeout((): void => {
-      this.isLoading = false;
-    }, 500);
-    this.filterItems();
+    this.initializeFilter();
+    setTimeout(() => this.isLoading.next(false), 500);
   }
 
   public ngOnDestroy(): void {
@@ -66,13 +71,9 @@ export class TodolistComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  protected getAllListItems(): TodoListItem[] {
-    return [...this.filteredItems];
-  }
-
   protected addItem(created: boolean): void {
     if (created) {
-      this.filterItems();
+      this.initializeFilter();
       this.toastService.showToast("Item added");
     }
   }
@@ -81,13 +82,14 @@ export class TodolistComponent implements OnInit, OnDestroy {
     this.todoListService.deleteItem(itemId)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-      this.filteredItems = this.todoListService.deleteLocalItemArray(this.filteredItems, itemId);
-      this.toastService.showToast("Item deleted");
-    });
+        const updatedItems: TodoListItem[] = this.todoListService.deleteLocalItemArray(this.filteredItems.getValue(), itemId);
+        this.filteredItems.next(updatedItems);
+        this.toastService.showToast("Item deleted");
+      });
   }
 
   protected selectItem(itemId: string): void {
-    this.router.navigate([`/tasks/${itemId}`]).then();
+    this.router.navigate([`backlog/tasks/${itemId}`]).then();
     this.selectedItemId = itemId;
   }
 
@@ -95,24 +97,31 @@ export class TodolistComponent implements OnInit, OnDestroy {
     this.todoListService.updateItem(updatedItem)
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: TodoListItem) => {
-      this.filteredItems = this.todoListService.updateLocalItemArray(this.filteredItems, response);
-      this.toastService.showToast("Item updated");
-    });
+        const updatedItems: TodoListItem[] = this.filteredItems.getValue().map(item =>
+          item.id === response.id ? response : item
+        );
+
+        const selectedStatus: ItemStatus | null = this.selectedStatus.getValue();
+        const filteredItems: TodoListItem[] =
+          selectedStatus ? updatedItems.filter((item: TodoListItem) => item.status === selectedStatus) : updatedItems;
+
+        this.filteredItems.next(filteredItems);
+        this.toastService.showToast("Item updated");
+      });
   }
 
-  protected filterItems(): void {
-    if (this.selectedStatus === null) {
-      this.todoListService.getAllListItems()
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((listItems: TodoListItem[]) => {
-          this.filteredItems = listItems;
-      });
-    } else {
-      this.todoListService.getAllListItems()
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((listItems: TodoListItem[]) => {
-          this.filteredItems = listItems.filter(item => item.status === this.selectedStatus);
-      });
-    }
+  protected setSelectedStatus(status: ItemStatus | null): void {
+    this.selectedStatus.next(status);
+  }
+
+  private initializeFilter(): void {
+    combineLatest([this.todoListService.getAllListItems(), this.selectedStatus$])
+      .pipe(
+        takeUntil(this.destroy$),
+        map(([listItems, selectedStatus]) =>
+          selectedStatus === null ? listItems : listItems.filter(item => item.status === selectedStatus)
+        )
+      )
+      .subscribe(filteredItems => this.filteredItems.next(filteredItems));
   }
 }

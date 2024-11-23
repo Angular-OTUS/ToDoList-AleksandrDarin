@@ -3,18 +3,18 @@
 
   <div>
     <mat-form-field appearance="fill" class="select-field">
-      <mat-select [(value)]="selectedStatus" (selectionChange)="filterItems()">
+      <mat-select [(value)]="selectedStatus$" (selectionChange)="setSelectedStatus($event.value)">
         <mat-option [value]="null">All</mat-option>
         <mat-option *ngFor="let status of statuses" [value]="status">{{ status }}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
-  <app-loading-spinner *ngIf="isLoading; else content"></app-loading-spinner>
+  <app-loading-spinner *ngIf="isLoading$ | async; else content"></app-loading-spinner>
   <ng-template #content>
     <div class="main-content">
       <div class="todo-list">
-        <app-todolist-item *ngFor="let item of getAllListItems()"
+        <app-todolist-item *ngFor="let item of (filteredItems$ | async)"
                            class="todo-item"
                            [ngClass]="{'selected': selectedItemId === item.id}"
                            [listItem]="item"
