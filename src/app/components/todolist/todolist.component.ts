@@ -14,6 +14,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
 import {TodoCreateItemComponent} from "../todo-create-item/todo-create-item.component";
 import {Router, RouterOutlet} from "@angular/router";
 import {BehaviorSubject, combineLatest, map, Observable, Subject, takeUntil} from "rxjs";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-todolist',
@@ -33,14 +34,13 @@ import {BehaviorSubject, combineLatest, map, Observable, Subject, takeUntil} fro
     MatOption,
     TodoCreateItemComponent,
     RouterOutlet,
-    AsyncPipe
+    AsyncPipe,
+    TranslatePipe
   ],
   templateUrl: './todolist.component.html',
   styleUrl: './todolist.component.css',
 })
 export class TodolistComponent implements OnInit, OnDestroy {
-
-  protected readonly componentTitle: string = "Todo List";
 
   private isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public isLoading$: Observable<boolean> = this.isLoading.asObservable();
@@ -58,7 +58,8 @@ export class TodolistComponent implements OnInit, OnDestroy {
   constructor(
     private todoListService: TodoListService,
     private toastService: ToastService,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService
   ) {}
 
   public ngOnInit(): void {
@@ -74,7 +75,7 @@ export class TodolistComponent implements OnInit, OnDestroy {
   protected addItem(created: boolean): void {
     if (created) {
       this.initializeFilter();
-      this.toastService.showToast("Item added");
+      this.toastService.showToast(this.translateService.instant('toast.task.created'));
     }
   }
 
@@ -84,7 +85,7 @@ export class TodolistComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         const updatedItems: TodoListItem[] = this.todoListService.deleteLocalItemArray(this.filteredItems.getValue(), itemId);
         this.filteredItems.next(updatedItems);
-        this.toastService.showToast("Item deleted");
+        this.toastService.showToast(this.translateService.instant('toast.task.deleted'));
       });
   }
 
@@ -106,7 +107,7 @@ export class TodolistComponent implements OnInit, OnDestroy {
           selectedStatus ? updatedItems.filter((item: TodoListItem) => item.status === selectedStatus) : updatedItems;
 
         this.filteredItems.next(filteredItems);
-        this.toastService.showToast("Item updated");
+        this.toastService.showToast(this.translateService.instant('toast.task.updated'));
       });
   }
 

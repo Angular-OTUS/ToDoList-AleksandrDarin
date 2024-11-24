@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../environment";
 import {Observable} from "rxjs";
 import {ToastService} from "./toastService";
+import {TranslateService} from "@ngx-translate/core";
 
 @Injectable({
   providedIn: "root"
@@ -14,7 +15,8 @@ export class TodoListService {
 
   constructor(
     private httpClient: HttpClient,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private translateService: TranslateService
   ) {}
 
   public addItem(title: string, description?: string): Observable<void> {
@@ -27,7 +29,7 @@ export class TodoListService {
       };
       return this.httpClient.post<void>(this.apiUrl, newItem)
     } else {
-      this.toastService.showToast("Error adding new item: title is empty");
+      this.toastService.showToast(this.translateService.instant('toast.task.error.emptyArray'));
       throw Error("Error adding new item: title is empty");
     }
   }

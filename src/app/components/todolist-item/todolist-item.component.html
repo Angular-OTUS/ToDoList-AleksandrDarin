@@ -1,4 +1,4 @@
-<div (dblclick)="enableEdit()" appTooltip="Double click here to see the description">
+<div (dblclick)="enableEdit()" appTooltip= "{{ 'listItem.edit.tooltip' | translate }}">
   <input type="checkbox" [checked]="listItem.status === ItemStatus.COMPLETED" (change)="toggleStatus()">
   <span *ngIf="!isEditing" class="todo-text">{{ listItem.title }}</span>
 
@@ -6,12 +6,12 @@
     <input type="text" [(ngModel)]="editTitle" />
     <app-button (click)="saveTitle()"
                 [additionalCssClasses]="'button--save'">
-      {{ saveButtonTitle }}
+      {{ 'button.save.title' | translate }}
     </app-button>
   </div>
 </div>
 <app-button (click)="deleteItem()"
             [additionalCssClasses]="'button--delete'"
-            appTooltip="Click here to delete this item">
-  {{ deleteButtonTitle }}
+            appTooltip="{{ 'listItem.delete.tooltip' | translate }}">
+  {{ 'button.delete.title' | translate }}
 </app-button>

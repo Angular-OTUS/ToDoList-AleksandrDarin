@@ -1,0 +1,20 @@
+{
+  "todolist.component.title": "Список задач",
+  "taskBoard.component.title": "Доска задач",
+  "Board": "Доска",
+  "Backlog": "Бэклог",
+  "status.all.title": "Все",
+  "button.delete.title": "Удалить",
+  "button.save.title": "Сохранить",
+  "listItem.edit.tooltip": "Кликните, чтобы увидеть описание",
+  "listItem.delete.tooltip": "Кликните, чтобы удалить задачу",
+  "item.create.tooltip": "Кликните, чтобы добавить новую задачу",
+  "item.create.addPlaceholder": "Добавьте новую задачу",
+  "item.create.descriptionPlaceholder": "Добавьте описание вашей новой задачи",
+  "item.create.addButtonTitle": "Добавить задачу",
+  "toast.task.created": "Задача создана",
+  "toast.task.updated": "Задача обновлена",
+  "toast.task.deleted": "Задача удалена",
+  "toast.task.error": "Произошла ошибка",
+  "toast.task.error.emptyArray": "Произошла ошибка: пустой массив"
+}

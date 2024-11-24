@@ -11,6 +11,7 @@ import {ItemStatus, TodoListItem} from "../../interfaces/todolist-item";
 import {TodoListService} from "../../services/todoListService";
 import {ToastService} from "../../services/toastService";
 import {Subject, takeUntil} from "rxjs";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-board',
@@ -40,7 +41,8 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   constructor(
     private todoListService: TodoListService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private translateService: TranslateService
   ) {}
 
   public ngOnInit(): void {
@@ -64,7 +66,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
       this.filteredItems = this.todoListService.deleteLocalItemArray(this.filteredItems, itemId);
-      this.toastService.showToast("Item deleted");
+      this.toastService.showToast(this.translateService.instant('toast.task.deleted'));
     });
   }
 
@@ -73,7 +75,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: TodoListItem) => {
       this.filteredItems = this.todoListService.updateLocalItemArray(this.filteredItems, response);
-      this.toastService.showToast("Item updated");
+        this.toastService.showToast(this.translateService.instant('toast.task.updated'));
     });
   }
 
