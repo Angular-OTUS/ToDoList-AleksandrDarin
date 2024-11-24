@@ -1,0 +1,20 @@
+{
+  "todolist.component.title": "Todo List",
+  "taskBoard.component.title": "Task Board",
+  "Board": "Board",
+  "Backlog": "Backlog",
+  "status.all.title": "All",
+  "button.delete.title": "Delete",
+  "button.save.title": "Save",
+  "listItem.edit.tooltip": "Click here to see the description",
+  "listItem.delete.tooltip": "Click here to delete this item",
+  "item.create.tooltip": "Click here to add new item",
+  "item.create.addPlaceholder": "Add your new todo",
+  "item.create.descriptionPlaceholder": "Add your new todo description",
+  "item.create.addButtonTitle": "Add task",
+  "toast.task.created": "Item created",
+  "toast.task.updated": "Item updated",
+  "toast.task.deleted": "Item deleted",
+  "toast.task.error": "Error happened",
+  "toast.task.error.emptyArray": "Error happened: empty array"
+}

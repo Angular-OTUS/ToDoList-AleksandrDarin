@@ -4,6 +4,7 @@ import {ButtonComponent} from "../button/button.component";
 import {TooltipDirective} from "../../shared/tooltip.directive";
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
+import {TranslatePipe} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-todolist-item',
@@ -13,6 +14,7 @@ import {NgIf} from "@angular/common";
     TooltipDirective,
     FormsModule,
     NgIf,
+    TranslatePipe,
   ],
   templateUrl: './todolist-item.component.html',
   styleUrl: './todolist-item.component.css',
@@ -23,8 +25,6 @@ export class TodolistItemComponent {
   @Output() delete: EventEmitter<string> = new EventEmitter<string>();
   @Output() update: EventEmitter<TodoListItem> = new EventEmitter<TodoListItem>();
 
-  protected readonly deleteButtonTitle: string = "Delete";
-  protected readonly saveButtonTitle: string = "Save";
   protected isEditing: boolean = false;
   protected editTitle: string = '';
 
