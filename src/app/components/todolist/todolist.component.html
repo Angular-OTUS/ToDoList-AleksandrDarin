@@ -1,10 +1,10 @@
 <div class="todo-container">
-  <h1>{{ componentTitle }}</h1>
+  <h1>{{ 'todolist.component.title' | translate }}</h1>
 
   <div>
     <mat-form-field appearance="fill" class="select-field">
       <mat-select [(value)]="selectedStatus$" (selectionChange)="setSelectedStatus($event.value)">
-        <mat-option [value]="null">All</mat-option>
+        <mat-option [value]="null">{{ 'status.all.title' | translate }}</mat-option>
         <mat-option *ngFor="let status of statuses" [value]="status">{{ status }}</mat-option>
       </mat-select>
     </mat-form-field>

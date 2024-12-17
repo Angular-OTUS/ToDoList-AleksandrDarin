@@ -6,6 +6,7 @@ import {TooltipDirective} from "../../shared/tooltip.directive";
 import {TodoListService} from "../../services/todoListService";
 import {Subject, takeUntil} from "rxjs";
 import {ToastService} from "../../services/toastService";
+import {TranslatePipe, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-todo-create-item',
@@ -15,16 +16,14 @@ import {ToastService} from "../../services/toastService";
     MatInput,
     ReactiveFormsModule,
     TooltipDirective,
-    FormsModule
+    FormsModule,
+    TranslatePipe
   ],
   templateUrl: './todo-create-item.component.html',
   styleUrl: './todo-create-item.component.css'
 })
 export class TodoCreateItemComponent implements OnDestroy {
 
-  protected readonly inputPlaceholder: string = "Add your new todo"
-  protected readonly descriptionPlaceholder: string = "Add your new todo description"
-  protected readonly addButtonTitle: string = "Add task"
   protected newItemTitle: string = '';
   protected newItemDescription: string = '';
   private destroy$: Subject<void> = new Subject<void>();
@@ -33,7 +32,8 @@ export class TodoCreateItemComponent implements OnDestroy {
 
   constructor(
     private todoListService: TodoListService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private translateService: TranslateService
   ) {}
 
   public ngOnDestroy(): void {
@@ -46,7 +46,7 @@ export class TodoCreateItemComponent implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         error: (err) => {
-          this.toastService.showToast("Error adding new item");
+          this.toastService.showToast(this.translateService.instant('toast.task.error'));
           throw Error("Error adding new item: " + err.message);
         }
       });
